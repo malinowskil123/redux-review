@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { setMovieInfo } from '../redux/moviesReducer'
 import styles from './styles'
 
 class MovieForm extends Component {
@@ -7,18 +9,21 @@ class MovieForm extends Component {
     this.state = {
       title: '',
       poster: '',
-      westenscale: null,
+      westenscale: null
     }
   }
 
   handleChange = e => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     })
   }
 
   handleSubmit = e => {
     e.preventDefault()
+    const { title, poster, westenscale } = this.state
+    const { setMovieInfo } = this.props
+    setMovieInfo(title, poster, westenscale)
     this.props.history.push('/confirm')
   }
 
@@ -29,26 +34,26 @@ class MovieForm extends Component {
         <form onSubmit={this.handleSubmit} style={styles.form}>
           <input
             style={styles.formInput}
-            name="title"
-            placeholder="Title"
+            name='title'
+            placeholder='Title'
             onChange={this.handleChange}
           />
           <input
             style={styles.formInput}
-            name="poster"
-            placeholder="Poster URL"
+            name='poster'
+            placeholder='Poster URL'
             onChange={this.handleChange}
           />
           <input
             style={styles.formInput}
-            name="westenscale"
-            placeholder="Westenscale Rating"
+            name='westenscale'
+            placeholder='Westenscale Rating'
             onChange={this.handleChange}
-            type="number"
+            type='number'
             max={10}
             min={0}
           />
-          <button type="submit" style={styles.formButton}>
+          <button type='submit' style={styles.formButton}>
             NEXT
           </button>
         </form>
@@ -56,4 +61,5 @@ class MovieForm extends Component {
     )
   }
 }
-export default MovieForm
+// no need set the state we just need a function
+export default connect(null, { setMovieInfo })(MovieForm)
